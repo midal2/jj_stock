@@ -1,0 +1,70 @@
+--- #Default
+server: #서버설정
+  port: 9000 #서버포트
+  tomcat: #톰캣설정
+    accesslog:
+      pattern: "%{yyyy-MM-dd HH:mm:ss}t\t%s\t%r\t%{User-Agent}i\t%{Referer}i\t%a\t%b"
+      enabled: true
+    basedir: .
+spring: #스프링설정
+  autoconfigure:
+    exclude: org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration #DB안쓸경우 설정
+  #  datasource:
+  #    driver-class-name: com.mysql.jdbc.Driver
+  #    url: jdbc:mysql://midal.cxpwn53p8ynb.ap-northeast-2.rds.amazonaws.com:3306/mydb?autoReconnect=true&useSSL=false&useUnicode=true&characterEncoding=utf8
+  #    username: jj
+  #    password: bizstudy
+  #    #maxIdle: 20
+  #    #max-active: 1000
+  #    #maxWait: 10000
+  #    hikari:
+  #      connection-test-query: SELECT 1 FROM DUAL
+  #      connection-timeout: 40000
+  #      idle-timeout: 200000
+  #      minimum-idle: 0
+  #      maximum-pool-size: 55 #실제 DB에서 제공가능한 최대Connection수를 초과하지 않도록 구성
+  #      pool-name: yourPoolName
+  #      auto-commit: false
+  #    type: com.zaxxer.hikari.HikariDataSource
+mybatis: #MyBatis 설정
+  mapper-locations: classpath:mapper/**/*.xml
+  configuration:
+    lazy-loading-enabled: true
+    aggressive-lazy-loading: false
+    map-underscore-to-camel-case: true
+    auto-mapping-behavior: full
+krx: #거래소
+  url: "http://asp1.krx.co.kr/servlet/krx.asp.XMLSiseEng?code="
+  poolSize: 1 #쓰레드풀갯수(maximum-pool-size 갯수을 고려해서 구성/초과할경우 DB Timeout의 가능성을 고려해야함)
+  groupSize: 3 #쓰레드당 처리할 종목코드수(poolSize를 더이상 늘리기 힘들경우 종목코드를 늘리는 전략을 고려해야함)
+  batchInterval: 20000 # 배치 Interval(밀리세컨드)
+---
+spring:
+  profiles: local
+logging:
+  level:
+    jj.biztrip.batch.krx.DataGatherDAO: ERROR
+    jj.biztrip.batch.krx.DataGather: INFO
+    jj.biztrip.batch.krx.DataBatchManager: INFO
+krx: #거래소
+  poolSize: 50 #쓰레드풀갯수(maximum-pool-size 갯수을 고려해서 구성/초과할경우 DB Timeout의 가능성을 고려해야함)
+  groupSize: 3 #쓰레드당 처리할 종목코드수(poolSize를 더이상 늘리기 힘들경우 종목코드를 늘리는 전략을 고려해야함)
+  batchInterval: 15000 # 배치 Interval(밀리세컨드)
+---
+spring:
+  profiles: dev
+---
+spring:
+  profiles: real
+logging:
+  level:
+    jj.biztrip.batch.krx.DataGatherDAO: DEBUG
+    jj.biztrip.batch.krx.DataGather: DEBUG
+    jj.biztrip.batch.krx.DataBatchManaeger: DEBUG
+krx: #거래소
+  poolSize: 50 #쓰레드풀갯수(maximum-pool-size 갯수을 고려해서 구성/초과할경우 DB Timeout의 가능성을 고려해야함)
+  groupSize: 1 #쓰레드당 처리할 종목코드수(poolSize를 더이상 늘리기 힘들경우 종목코드를 늘리는 전략을 고려해야함)
+  batchInterval: 15000 # 배치 Interval(밀리세컨드)
+---
+spring:
+  profiles: real_web
