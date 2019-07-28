@@ -27,12 +27,12 @@ public class SpringStart implements WebSocketMessageBrokerConfigurer
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
         registry.enableSimpleBroker("/topic");
-        registry.setApplicationDestinationPrefixes("/");
+        registry.setApplicationDestinationPrefixes("/app");
     }
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/stockInfo").withSockJS();
+        registry.addEndpoint("/stockInfo").setAllowedOrigins("*").withSockJS();
     }
 
     /*@Bean
