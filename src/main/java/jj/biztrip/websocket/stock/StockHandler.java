@@ -7,6 +7,7 @@ import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 public class StockHandler {
@@ -24,7 +25,10 @@ public class StockHandler {
 
             @Override
             public MessageHeaders getHeaders() {
-                return new MessageHeaders(new HashMap<>());
+                Map<String, Object> map = new HashMap<>();
+                map.put("test", "값!!!");
+
+                return new MessageHeaders(map);
             }
         };
     }
