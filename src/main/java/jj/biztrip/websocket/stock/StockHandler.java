@@ -1,5 +1,7 @@
 package jj.biztrip.websocket.stock;
 
+import jj.biztrip.svc.stock.StockService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -11,6 +13,9 @@ import java.util.Map;
 
 @RestController
 public class StockHandler {
+
+    @Autowired
+    StockService stockService;
 
     @MessageMapping("stocktest")
     @SendTo("/topic/stockInfo")
@@ -32,5 +37,13 @@ public class StockHandler {
             }
         };
     }
+
+    @MessageMapping("setStockDetail")
+    public void setStockDetail(String stockCd){
+        System.out.println("setStockDetail########!!!!!!![" + stockCd);
+
+        stockService.setStockDetail(stockCd);
+    }
+
 }
 

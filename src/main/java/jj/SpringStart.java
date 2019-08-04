@@ -16,7 +16,7 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 @SpringBootApplication
 @Configuration
 @EnableWebSocketMessageBroker
-//@EnableScheduling
+@EnableScheduling
 public class SpringStart implements WebSocketMessageBrokerConfigurer
 {
     public static void main(String[] args){
@@ -33,6 +33,7 @@ public class SpringStart implements WebSocketMessageBrokerConfigurer
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint("/stockInfo").setAllowedOrigins("*").withSockJS();
+        registry.addEndpoint("/stockDetail").setAllowedOrigins("*").withSockJS();
     }
 
     /*@Bean
